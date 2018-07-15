@@ -468,3 +468,45 @@ class Solution:
 
 
 # 表示数值的字符串
+class Solution:
+    # s字符串
+    # 可识别模式： A[.[B]][e|EC] or .B[e|EC]
+    def isNumeric(self, s):
+        if len(s) == 0:
+            return False
+        # A部分
+        s = self.scaninteger(s)
+        # B 部分
+        if s[0] == '.' and len(s) > 1:
+            s = self.scanuninteger(s[1:])
+        # C 部分
+        if (s[0] == 'E' or s[0] == 'e') and len(s) > 1:
+            s = self.scaninteger(s[1:])
+        if len(s) == 1 and s[0] >= '0' and s[0] <= '9':
+            return True
+        else:
+            return False
+
+    def scaninteger(self, s):
+        if len(s) > 1 and (s[0] == '+' or s[0] == '-'):
+            s = s[1:]
+        return self.scanuninteger(s)
+    def scanuninteger(self, s):
+        while s[0] >= '0' and s[0] <= '9' and len(s) > 1:
+            s = s[1:]
+        return s
+
+
+# 调整数组顺序使奇数位于偶数前面
+class Solution:
+    # 奇数位于前半段，偶数位于后半段，并保证奇数与奇数，偶数与偶数相对位置不变
+    def reOrderArray(self, array):
+        L1 = []
+        L2 = []
+        for i in array:
+            if i % 2 == 1:
+                L1.append(i)
+            else:
+                L2.append(i)
+        L1.extend(L2)
+        return L1
