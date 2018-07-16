@@ -510,3 +510,42 @@ class Solution:
                 L2.append(i)
         L1.extend(L2)
         return L1
+
+# 链表中倒数第k个结点
+
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
+
+class Solution:
+    def FindKthToTail(self, head, k):
+        if k < 1:
+            return None
+        if not head:
+            # 如果链表是空的，哪来的val和next呢
+            return None
+        p = head
+        for i in range(k-1):
+            if head.next != None:
+                head = head.next
+            else:
+                return None
+        while head.next != None:
+            head = head.next
+            p = p.next
+        return p.val
+
+
+# 求链表中间点
+## 如果总节点是奇数，那么返回中间节点，如果是偶数，则返回中间两个节点的任意一个
+class Solution:
+    def FindhalfToTail(self, head):
+        if not head:
+            # 如果链表是空的，哪来的val和next呢
+            return None
+        p = head
+        while head.next != None and head.next.next != None:
+            head = head.next.next
+            p = p.next
+        return p.val
