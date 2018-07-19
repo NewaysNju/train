@@ -549,3 +549,130 @@ class Solution:
             head = head.next.next
             p = p.next
         return p.val
+
+# 链表中环的入口节点
+# 我的代码
+class Solution:
+    def EntryNodeOfLoop(self, pHead):
+        if not pHead or pHead.next == None or pHead.next.next == None:
+            return None
+        findnode = self.FindNode(pHead)
+        if not findnode:
+            return None
+        else:
+            n = self.FindNodeN(findnode)
+            pa = pHead
+            for i in range(n):
+                pa = pa.next
+            k = 1
+            while pa != pHead:
+                pHead = pHead.next
+                pa = pa.next
+                k += 1
+            return k
+
+    def FindNode(self, pHead):
+        pa = pHead.next.next
+        pb = pHead.next
+        while pa != pb:
+            if pHead.next != None and pHead.next.next != None:
+                pa = pa.next.next
+                pb = pb.next
+            else:
+                return None
+        return pa
+
+    def FindNodeN(self, pHead):
+        pn = pHead.next
+        n = 1
+        while pn != pHead:
+            pn = pn.next
+            n += 1
+        return n
+
+
+# 正确运营的代码
+class Solution:
+    def EntryNodeOfLoop(self, pHead):
+        if pHead == None or pHead.next == None or pHead.next.next == None:
+            return None
+        low = pHead.next
+        fast = pHead.next.next
+        while low != fast:
+            if fast.next == None or fast.next.next == None:
+                return None
+            low = low.next
+            fast = fast.next.next
+        fast = pHead
+        while low != fast:
+            low = low.next
+            fast = fast.next
+        return fast
+
+
+# 反转链表
+class Solution:
+    # 返回ListNode
+    def ReverseList(self, pHead):
+        if not pHead or not pHead.next:
+            # 当链表为空或者链表只有一个节点时
+            return pHead
+        last = None  # 这个点实际上是反转链表最后一个点，为None
+        while pHead:
+            # 实际上一次性处理三个点，last->pHead->tmp
+            # 首先将pHead赋予tmp
+            # 其次斩断pHead与tmp关联，反转：last <- pHead
+            # 再次，递进这个关系，pHead左移,变成last
+            # 最后，tmp左移，变成pHead
+            tmp = pHead.next
+            pHead.next = last
+            last = pHead
+            pHead = tmp
+        return last
+
+    def reverse_recursion(self, pHead):
+        if not pHead or not pHead.next:
+            return pHead
+        # 整个链表右移1位
+        new_head = self.reverse_recursion(pHead.next)
+        pHead.next.next = pHead
+        pHead.next = None
+        return new_head
+
+
+# 合并两个排序的链表
+class Solution:
+    # 返回合并后列表
+    def Merge(self, pHead1, pHead2):
+        if pHead1 == None:
+            return pHead2
+        elif pHead2 == None:
+            return pHead1
+        pHead = ListNode(0)
+        if pHead1.val < pHead2.val:
+            pHead = pHead1
+            pHead.next = self.Merge(pHead1.next, pHead2)
+        else:
+            pHead = pHead2
+            pHead.next = self.Merge(pHead1, pHead2.next)
+        return pHead
+
+# 树的子结构
+class Solution:
+    def HasSubtree(self, pRoot1, pRoot2):
+        result = False
+        if pRoot1 and pRoot2:
+            if pRoot1.val == pRoot2.val:
+                result = self.DoseTree1HaveTree2(pRoot1, pRoot2)
+            if not result:
+                result = self.HasSubtree(pRoot1.left, pRoot2) or self.HasSubtree(pRoot1.right, pRoot2)
+        return result
+    def DoseTree1HaveTree2(self, pRoot1, pRoot2):
+        if not pRoot2:
+            # 顺序也是很讲逻辑
+            return True
+        if not pRoot1:
+            return False
+        if pRoot1.val != pRoot2.val:
+            return False
+        return self.DoseTree1HaveTree2(pRoot1.left, pRoot2.left) and self.DoseTree1HaveTree2(pRoot1.right, pRoot2.right)
