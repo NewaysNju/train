@@ -676,3 +676,87 @@ class Solution:
         if pRoot1.val != pRoot2.val:
             return False
         return self.DoseTree1HaveTree2(pRoot1.left, pRoot2.left) and self.DoseTree1HaveTree2(pRoot1.right, pRoot2.right)
+
+# 二叉树的镜像
+class Solution:
+    # 返回镜像树的根节点
+    def Mirror(self, root):
+        if not root:
+            return root
+        if (not root.left) and (not root.right):
+            return root
+        root.left, root.right = root.right, root.left
+        if root.left:
+            self.Mirror(root.left)
+        if root.right:
+            self.Mirror(root.right)
+    def Mirror_while(self, root):
+        pass
+
+
+
+
+
+# 例子
+# atree = TreeNode(8)
+# atree.left = TreeNode(6)
+# atree.right = TreeNode(10)
+# atree.left.left = TreeNode(5)
+# atree.left.right = TreeNode(7)
+# atree.right.left = TreeNode(9)
+# atree.right.right = TreeNode(11)
+#
+# tt = Solution()
+# tt.Mirror(atree)
+# print(atree.left.val)
+
+# 对称的二叉树
+class Solution:
+    def isSymmetrical(self, pRoot):
+        def is_same(p1, p2):
+            if not p1 and not p2:
+                return True
+            if (p1 and p2) and p1.val == p2.val:
+                return is_same(p1.left, p2.right) and is_same(p1.right, p2.left)
+            return False
+        if not pRoot:
+            return True
+        if pRoot.left and pRoot.right:
+            return False
+        if not pRoot.left and pRoot.right:
+            return False
+        return is_same(pRoot.left, pRoot.right)
+
+# 顺时针打印矩阵
+class Solution:
+    # matrix类型为二维列表，需要返回列表
+    def printMatrix(self, matrix):
+        if not matrix:
+            return None
+        row = len(matrix)
+        col = len(matrix[0])
+        start = 0
+        L = []
+        while col > start *2 and row > start * 2:
+            L.extend(self.printmatrixincircle(matrix, row, col, start))
+            start += 1
+        return L
+    def printmatrixincircle(self, matrix, row, col, start):
+        circleL = []
+        endrow = row - start
+        endcol = col - start
+        for i in range(start, endcol):
+            circleL.append(matrix[start][i])
+        if start < endrow - 1:
+            # 第二步的前提条件：起始行要小于终止行
+            for i in range(start+1, endrow):
+                circleL.append(matrix[i][endcol - 1])
+        if start < endrow - 1 and start < endcol - 1:
+            # 第三步的前提：起始行要小于终止行，起始列要小于终止列
+            for i in range(endcol - 2, start - 1, -1):
+                circleL.append(matrix[endrow - 1][i])
+        if start < endcol - 1 and start < endrow - 2:
+            # 第四步的前提：起始列要小于终止列，行数最少有3行
+            for i in range(endrow - 2, start, -1):
+                circleL.append(matrix[i][start])
+        return circleL
