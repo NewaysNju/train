@@ -761,114 +761,136 @@ class Solution:
                 circleL.append(matrix[i][start])
         return circleL
 
-    # 包含min函数的栈
-    class Solution:
-        def __init__(self):
-            self.min_stack = []
-            self.stack = []
+# 包含min函数的栈
+class Solution:
+    def __init__(self):
+        self.min_stack = []
+        self.stack = []
 
-        def push(self, node):
-            self.stack.append(node)
-            if not self.min_stack or node < self.min_stack[-1]:
-                self.min_stack.append(node)
-            else:
-                self.min_stack.append(self.min_stack[-1])
+    def push(self, node):
+        self.stack.append(node)
+        if not self.min_stack or node < self.min_stack[-1]:
+            self.min_stack.append(node)
+        else:
+            self.min_stack.append(self.min_stack[-1])
 
-        def pop(self):
-            self.stack.pop()
-            self.min_stack.pop()
+    def pop(self):
+        self.stack.pop()
+        self.min_stack.pop()
 
-        def top(self):
-            return self.stack[-1]
+    def top(self):
+        return self.stack[-1]
 
-        def min(self):
-            return self.min_stack[-1]
+    def min(self):
+        return self.min_stack[-1]
 
-    # 栈的压入、弹出序列
-    class Solution:
-        def IsPopOrder(self, pushV, popV):
-            if not pushV or len(pushV) != len(popV):
-                # 如果进栈是空，或者进栈与出栈的长度一样
-                return False
-            stack = []
-            for i in pushV:
-                stack.append(i)
-                while len(stack) and stack[-1] == popV[0]:
-                    stack.pop()
-                    popV.pop(0)
-            if len(stack):
-                # 就是出现不等的情况
-                return False
-            return True
+# 栈的压入、弹出序列
+class Solution:
+    def IsPopOrder(self, pushV, popV):
+        if not pushV or len(pushV) != len(popV):
+            # 如果进栈是空，或者进栈与出栈的长度一样
+            return False
+        stack = []
+        for i in pushV:
+            stack.append(i)
+            while len(stack) and stack[-1] == popV[0]:
+                stack.pop()
+                popV.pop(0)
+        if len(stack):
+            # 就是出现不等的情况
+            return False
+        return True
 
-    # 不分行从上到下打印二叉树
-    class Solution:
-        # 返回从上到下每个节点值列表，例：[1,2,3]
-        def PrintFromTopToBottom(self, root):
-            l = []
-            if not root:
-                return l
-            L = [root]
-            while len(L) != 0:
-                proot = L.pop(0)
-                l.append(proot.val)
-                if proot.left:
-                    L.append(proot.left)
-                if proot.right:
-                    L.append(proot.right)
+# 不分行从上到下打印二叉树
+class Solution:
+    # 返回从上到下每个节点值列表，例：[1,2,3]
+    def PrintFromTopToBottom(self, root):
+        l = []
+        if not root:
             return l
+        L = [root]
+        while len(L) != 0:
+            proot = L.pop(0)
+            l.append(proot.val)
+            if proot.left:
+                L.append(proot.left)
+            if proot.right:
+                L.append(proot.right)
+        return l
 
-    # 分行从上到下打印二叉树
-    class Solution:
-        def PrintFromTopToBottom2(self, root):
-            l = []
-            if not root:
-                return l
-            L = [root]
-            i = 1
-            while len(L) != 0:
-                proot = L.pop(0)
-                l.append(proot.val)
-                i -= 1
-                if proot.left:
-                    L.append(proot.left)
-                if proot.right:
-                    L.append(proot.right)
-                if i == 0:
+# 分行从上到下打印二叉树
+class Solution:
+    def PrintFromTopToBottom2(self, root):
+        l = []
+        if not root:
+            return l
+        L = [root]
+        i = 1
+        while len(L) != 0:
+            proot = L.pop(0)
+            l.append(proot.val)
+            i -= 1
+            if proot.left:
+                L.append(proot.left)
+            if proot.right:
+                L.append(proot.right)
+            if i == 0:
+                print(l)
+                l = []
+                i = len(L)
+        return ''
+
+# 之字形打印二叉树
+class Solution:
+    def PrintFromTopToBottom3(self, root):
+        l = []
+        if not root:
+            return l
+        L = [root]
+        i = 1
+        r = 1
+        while len(L) != 0:
+            proot = L.pop(0)
+            l.append(proot.val)
+            i -= 1
+            if proot.left:
+                L.append(proot.left)
+            if proot.right:
+                L.append(proot.right)
+            if i == 0:
+                if r % 2 == 1:
                     print(l)
-                    l = []
-                    i = len(L)
-            return ''
+                else:
+                    print(self.reverse(l))
+                r += 1
+                l = []
+                i = len(L)
+        return ''
 
-    # 之字形打印二叉树
-    class Solution:
-        def PrintFromTopToBottom3(self, root):
-            l = []
-            if not root:
-                return l
-            L = [root]
-            i = 1
-            r = 1
-            while len(L) != 0:
-                proot = L.pop(0)
-                l.append(proot.val)
-                i -= 1
-                if proot.left:
-                    L.append(proot.left)
-                if proot.right:
-                    L.append(proot.right)
-                if i == 0:
-                    if r % 2 == 1:
-                        print(l)
-                    else:
-                        print(self.reverse(l))
-                    r += 1
-                    l = []
-                    i = len(L)
-            return ''
-
-        def reverse(self, l):
-            d = []
-            while l:
-                d.append(l.pop())
-            return d
+    def reverse(self, l):
+        d = []
+        while l:
+            d.append(l.pop())
+        return d
+        
+# 二叉搜索树的后序遍历序列
+class Solution:
+    def VerifySquenceOfBST(self, sequence):
+        if not sequence:
+            return False
+        root = sequence[-1]
+        j = 0
+        for i in range(len(sequence)):
+            j = i
+            if sequence[i] > root:
+                break
+        for k in range(j, len(sequence)):
+            if sequence[k] < root:
+                return False
+        left = True
+        if j > 0:
+            left = self.VerifySquenceOfBST(sequence[:j])
+        right = True
+        if j < len(sequence) - 1:
+            right = self.VerifySquenceOfBST(sequence[j:-1])
+        return left and right
