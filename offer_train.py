@@ -894,3 +894,21 @@ class Solution:
         if j < len(sequence) - 1:
             right = self.VerifySquenceOfBST(sequence[j:-1])
         return left and right
+
+# 二叉树中和为某一值的路径
+class Solution:
+    # 返回二维列表，内部每个列表表示找到的路径
+    def FindPath(self, root, expectNumber):
+        # 不满足
+        if not root:
+            return []
+        # 叶子节点正好满足
+        if root and not root.left and not root.right and root.val == expectNumber:
+            return [[root.val]]
+        res = []
+        left = self.FindPath(root.left, expectNumber-root.val)
+        right = self.FindPath(root.right, expectNumber-root.val)
+        # 把该父节点下的所有满足的路径都返回
+        for i in left + right:
+            res.append([root.val]+i)
+        return res
