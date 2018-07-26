@@ -912,3 +912,79 @@ class Solution:
         for i in left + right:
             res.append([root.val]+i)
         return res
+
+# 复杂链表的复制
+class RandomListNode:
+    def __init__(self, x):
+        self.label = x
+        self.next = None
+        self.random = None
+
+
+class Solution:
+    # 返回 RandomListNode
+    def Clone(self, pHead):
+        # write code here
+        pNode = pHead
+        while pNode != None:
+            pClone = RandomListNode(pNode.label)
+            pClone.next = pNode.next
+            pNode.next = pClone
+            pNode = pClone.next
+        self.ConnectSiblingNodes(pHead)
+        return self.ReconnectNodes(pHead)
+
+    def ConnectSiblingNodes(self, pHead):
+        pNode = pHead
+        while pNode != None:
+            pClone = pNode.next
+            if pNode.random != None:
+                pClone.random = pNode.random.next
+            pNode = pClone.next
+
+    def ReconnectNodes(self, pHead):
+        pNode = pHead
+        pCloneHead = None
+        pCloneNode = None
+
+        if pNode != None:
+            pCloneHead = pCloneNode = pNode.next
+            pNode.next = pCloneNode.next
+            pNode = pNode.next
+        while pNode != None:
+            pCloneNode.next = pNode.next
+            pCloneNode = pCloneNode.next
+            pNode.next = pCloneNode.next
+            pNode = pNode.next
+        return pCloneHead
+
+# 二叉搜索树与双向链表
+class Solution:
+    def Convert(self, pRootOfTree):
+        if not pRootOfTree:
+            return pRootOfTree
+        if not pRootOfTree.left and not pRootOfTree.right:
+            return pRootOfTree
+        # 处理左子树
+        self.Convert(pRootOfTree.left)
+        left = pRootOfTree.left
+
+        # 连接根与左子树最大结点
+        if left:
+            while (left.right):
+                left = left.right
+            pRootOfTree.left, left.right = left, pRootOfTree
+
+        # 处理右子树
+        self.Convert(pRootOfTree.right)
+        right = pRootOfTree.right
+
+        # 连接根与右子树最小结点
+        if right:
+            while (right.left):
+                right = right.left
+            pRootOfTree.right, right.left = right, pRootOfTree
+
+        while (pRootOfTree.left):
+            pRootOfTree = pRootOfTree.left
+        return pRootOfTree
