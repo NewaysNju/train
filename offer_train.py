@@ -988,3 +988,54 @@ class Solution:
         while (pRootOfTree.left):
             pRootOfTree = pRootOfTree.left
         return pRootOfTree
+
+# No.37 序列化二叉树
+class Solution:
+    def __init__(self):
+        self.s = ''
+
+    def Serialize(self, root):
+        if not root:
+            return '#'
+        return str(root.val) + ',' + self.Serialize(root.left) + ',' + self.Serialize(root.right)
+
+    def Deserialize(self, s):
+        try:
+            s = s.split(',')
+        except:
+            pass
+        if len(s) == 0:
+            return None
+        if len(s) == 1 and s[0] != '#':
+            return TreeNode(int(s[0]))
+        elif len(s) == 1 and s == '#':
+            return None
+        else:
+            self.s = s[1:]
+            tree = None
+            if s[0] != '#':
+                tree = TreeNode(int(s[0]))
+                tree.left = self.Deserialize(self.s)
+                tree.right = self.Deserialize(self.s)
+            return tree
+
+# No.38 字符串的排列
+class Solution:
+    def Permutation(self, ss):
+        if ss == '':
+            return ss
+        L = []
+        self.J = []
+        ss = list(ss)
+        self.permutation_cursive(ss, L)
+        return sorted(list(set(self.J)))
+
+    def permutation_cursive(self, ssl, L):
+        if len(ssl) == 0:
+            self.J.append(''.join(L))
+        for i in range(len(ssl)):
+            L1 = L[:]
+            L1.extend(ssl[i])
+            ssll = ssl[:]
+            _ = ssll.pop(i)
+            self.permutation_cursive(ssll, L1)
