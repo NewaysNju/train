@@ -1039,3 +1039,165 @@ class Solution:
             ssll = ssl[:]
             _ = ssll.pop(i)
             self.permutation_cursive(ssll, L1)
+
+# No.39 数组中出现次数超过一半的数字
+class Solution:
+    def MoreThanHalfNum_Solution1(self, numbers):
+        n = 1
+        if not numbers:
+            return None
+        before = numbers[0]
+        if len(numbers) == 1:
+            return before
+        for i in numbers:
+            if n == 0:
+                before = i
+                n = 1
+            if i == before:
+                n += 1
+            else:
+                n -= 1
+        if self.checkmoretime(numbers, before):
+            return before
+        else:
+            return 0
+
+    def partition(self, lyst, left, right):
+        # 定基准
+        middle = (left + right) // 2  # 随机找了一个点，为了防止最坏情况：即顺序情况下每次都取第一个，我们每次选中点
+        lyst[middle], lyst[right] = lyst[right], lyst[middle]
+        pivot = lyst[right]  # 注意：这里的pivot实际上就是我们选的中点，最后我们要返回的实际上是这个中点在排好序的位子
+        # 定边界
+        boundary = left
+        # 异位
+        for index in range(left, right):
+            if lyst[index] < pivot:
+                lyst[index], lyst[boundary] = lyst[boundary], lyst[index]
+                boundary += 1
+        # 归位
+        lyst[right], lyst[boundary] = lyst[boundary], lyst[right]
+        return boundary
+
+    def MoreThanHalfNum_Solution2(self, numbers):
+        start = 0
+        end = len(numbers) - 1
+        mid = len(numbers) >> 1
+        ind = self.partition(numbers, start, end)
+        while ind != mid:
+            if ind > mid:
+                end = ind - 1
+                ind = self.partition(numbers, start, end)
+            else:
+                start = ind + 1
+                ind = self.partition(numbers, start, end)
+        result = numbers[mid]
+        if self.checkmoretime(numbers, result):
+            return(result)
+        else:
+            return(0)
+
+
+    def checkmoretime(self, lyst, val):
+        n = 0
+        for i in lyst:
+            if i == val:
+                n += 1
+        if n > (len(lyst) >> 1):
+            return True
+        else:
+            return False
+
+# No.40 最小的K个数
+# 用快排解决
+class Solution:
+    def GetLeastNumbers_Solution(self, tinput, k):
+        # 实际上就是先用快排，找到第K个大的位子，然后一一比较
+        if k > len(tinput):
+            return None
+        start = 0
+        end = len(tinput) - 1
+        ind = self.partition(tinput, start, end)
+        while ind != k - 1:
+            if ind < k - 1:
+                start = ind + 1
+            else:
+                end = ind - 1
+            ind = self.partition(tinput, start, end)
+        return sorted(tinput[:k])
+
+
+
+    def partition(self, lyst, left, right):
+        mid = (left + right) // 2
+        lyst[mid], lyst[right] =  lyst[right], lyst[mid]
+        pivot = lyst[right]
+
+        boundary = left
+        for i in range(left, right):
+            if lyst[i] < pivot:
+                lyst[i], lyst[boundary] = lyst[boundary], lyst[i]
+                boundary += 1
+        lyst[boundary], lyst[right] = lyst[right], lyst[boundary]
+        return boundary
+
+# 用堆排序解决
+class Solution:
+    def HeapSort(self, lyst):
+        # 首先，我们做个大顶堆
+        for i in range(len(lyst) // 2 - 1, -1, -1):
+            self.HeapAdjust(lyst, i, len(lyst) - 1)
+        # 每次把根和最后一个元素交换位置，去掉最后一个元素，剩下元素继续编程大顶堆，最后得出一个升序序列
+        for i in range(len(lyst) - 1, 0, -1):
+            lyst[0], lyst[i] = lyst[i], lyst[0]
+            self.HeapAdjust(lyst, 0, i - 1)
+
+    def HeapAdjust(self, lyst, s, m):
+        # 堆调整，就是将顺序逐层排列的第s个节点变成以那个节点为根节点的子数的最大值
+        # m是这个序列最后一项
+        temp = lyst[s]
+        for j in range(2 * s, m, 2):
+            if lyst[j] < lyst[j + 1]:
+                j += 1
+            if temp < lyst[j]:
+                lyst[s] = lyst[j]
+                s = j
+        lyst[s] = temp
+    def GetLeastNumbers_Solution(self, tinput, k):
+        if not tinput or not k or k > len(tinput):
+            return []
+        self.HeapSort(tinput)
+        return tinput[:k]
+
+# 用改进后的堆解决：O(nlogk)
+class Solution:
+    def GetLeastNumbers_Solution2(self, tinput, k):
+        stl = tinput[:k]
+        for i in range(k,len(tinput)):
+            if tinput[i] < self.HeapAdjust(stl):
+                _ = stl.pop(0)
+                stl.append(tinput[i])
+        return stl
+
+    def HeapAdjust(self, lyst):
+        # 堆调整，返回堆里最大元素
+        temp = lyst[0]
+        s = 0
+        m = len(lyst) - 1
+        for j in range(2 * s, m, 2):
+            if lyst[j] < lyst[j + 1]:
+                j += 1
+            if temp < lyst[j]:
+                lyst[s] = lyst[j]
+                s = j
+        lyst[s] = temp
+        return lyst[0]
+
+# 调用现有的库
+# https://github.com/qiwsir/algorithm/blob/master/heapq.md
+import heapq
+class Solution:
+    def GetLeastNumbers_Solution(self, tinput, k):
+        if not tinput or not k or k > len(tinput):
+            return []
+        heapq.heapify(tinput)  # 将list转为堆
+        return [heapq.heappop(tinput) for _ in range(k)]  # heappop是堆中取出最小的数
