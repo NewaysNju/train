@@ -1202,65 +1202,86 @@ class Solution:
         heapq.heapify(tinput)  # 将list转为堆
         return [heapq.heappop(tinput) for _ in range(k)]  # heappop是堆中取出最小的数
 
-    # No.42 连续子数组的最大和
-    class Solution:
-        def FindGreatestSumOfSubArray(self, array):
-            if not array:
-                return None
-            cusumL = []
-            cusum = 0
-            for i in array:
-                cusumL.append(i)
-                if sum(cusumL) < 0:
-                    cusumL = []
-                else:
-                    cusum = max(cusum, sum(cusumL))
-            if len(cusumL) == 0:
-                return max(array)
-            return cusum
+# No.42 连续子数组的最大和
+class Solution:
+    def FindGreatestSumOfSubArray(self, array):
+        if not array:
+            return None
+        cusumL = []
+        cusum = 0
+        for i in array:
+            cusumL.append(i)
+            if sum(cusumL) < 0:
+                cusumL = []
+            else:
+                cusum = max(cusum, sum(cusumL))
+        if len(cusumL) == 0:
+            return max(array)
+        return cusum
 
-    # 1 应用动态规划解题
-    class Solution:
-        def FindGreatestSumOfSubArray(self, array):
+# 1 应用动态规划解题
+class Solution:
+    def FindGreatestSumOfSubArray(self, array):
             # DP: 状态：f[i]是以第i个数字结尾的子数组的最大和
             #     状态转移公式： f[i] = max(array[i],f[i-1]+array[i])
             #                        = array[i] if f[i-1] <= 0 else f[i-1] + array[i]
-            if not array:
-                return None
-            temp = 0
-            res = max(array)
-            for i in array:
-                temp = max(i, temp + i)
-                res = max(res, temp)
-            return res
+        if not array:
+            return None
+        temp = 0
+        res = max(array)
+        for i in array:
+            temp = max(i, temp + i)
+            res = max(res, temp)
+        return res
 
-    # 2 应用动态规划解题
-    class Solution:
-        def FindGreatestSumOfSubArray(self, array):
+# 2 应用动态规划解题
+class Solution:
+    def FindGreatestSumOfSubArray(self, array):
             # DP: 状态：f[i]是以第i个数字结尾的子数组的最大和
             #     状态转移公式： f[i] = max(array[i],f[i-1]+array[i])
             #                        = array[i] if f[i-1] <= 0 else f[i-1] + array[i]
             # 最后选择所有状态里最大的一个
-            if not array:
-                return None
-            temp = 0
-            L = []
-            for i in array:
-                temp = max(i, temp + i)
-                L.append(temp)
-            return max(L)
+        if not array:
+            return None
+        temp = 0
+        L = []
+        for i in array:
+            temp = max(i, temp + i)
+            L.append(temp)
+        return max(L)
 
-    # No.44 数字序列中某一位的数字
-    class Solution:
-        def digitAtIndex(self, n):
-            if n < 10:
-                return n + 1
-            count = 10
-            i = 1
-            while n > count:
-                n = n - count
-                count = 9 * 10 ** i * (i + 1)
-                i += 1
-            strn = n // i
-            dot = n % i
-            return str(strn)[dot]
+# No.44 数字序列中某一位的数字
+class Solution:
+    def digitAtIndex(self, n):
+        if n < 10:
+            return n + 1
+        count = 10
+        i = 1
+        while n > count:
+            n = n - count
+            count = 9 * 10 ** i * (i + 1)
+            i += 1
+        strn = n // i
+        dot = n % i
+        return str(strn)[dot]
+
+# 把数组排成最小的数
+class Solution:
+    def PrintMinNumber(self, numbers):
+        if not numbers:
+            return ""
+        numl = list(map(str, numbers))
+        numL = self.compare(numl)
+        return int(''.join(numL))
+    def compare(self, strL):
+        if len(strL) < 2:
+            return strL
+        temp = strL[0]
+        aL = []
+        bL = []
+        for i in strL[1:]:
+            if int(temp + i) > int(i + temp):
+                aL.append(i)
+            else:
+                bL.append(i)
+        return self.compare(aL) + [temp] + self.compare(bL)
