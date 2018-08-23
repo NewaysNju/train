@@ -1285,3 +1285,20 @@ class Solution:
             else:
                 bL.append(i)
         return self.compare(aL) + [temp] + self.compare(bL)
+
+# 把数字翻译成字符串
+class Solution:
+    def GetTranslation(self, num):
+        if not num:
+            return 0
+        string = str(num)
+        return self.translate_cursive(string)
+
+
+    def translate_cursive(self, string):
+        if len(string) < 2:
+            return 1
+        res = self.translate_cursive(string[1:])
+        if int(string[:2]) < 26:
+            res += self.translate_cursive(string[2:])
+        return res
