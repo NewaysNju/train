@@ -1314,3 +1314,36 @@ class Solution:
                 cur += nex  # nex是前者，cur是现在，一旦发生可以两种翻译，即前面所有遍历的字母都可以用在两种不同字串中
             nex = tmp
         return cur
+
+# No.47 礼物的最大价值
+class Solution:
+    def getMaxValue_solution1(self, values, row, col):
+        # 二维数组存储
+        giftMatrix = [[0]*col] * row
+        for i in range(col):
+            for j in range(row):
+                if i == 0 and j == 0:
+                    giftMatrix[i][j] = values[0]
+                elif i == 0:
+                    giftMatrix[i][j] = giftMatrix[i][j-1] + values[i*col + j]
+                elif j == 0:
+                    giftMatrix[i][j] = giftMatrix[i-1][j] + values[i*col + j]
+                else:
+                    giftMatrix[i][j] = max(giftMatrix[i-1][j], giftMatrix[i][j-1]) + values[i*col + j]
+        return giftMatrix[-1][-1]
+
+    def getMaxValue_solution2(self, values, row, col):
+        # 一维数组存储
+        if not values or row <= 0 or col <= 0:
+            return 0
+        giftArray = [0] * col
+        for i in range(col):
+            for j in range(row):
+                left = 0
+                up = 0
+                if i > 0:
+                    up = giftArray[j]
+                if j > 0:
+                    left = giftArray[j-1]
+                giftArray[j] = max(up, left) + values[i * col + j]
+        return giftArray[-1]
