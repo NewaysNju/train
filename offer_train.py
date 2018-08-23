@@ -1302,3 +1302,15 @@ class Solution:
         if int(string[:2]) < 26:
             res += self.translate_cursive(string[2:])
         return res
+    def GetTranslation_dp(self, numbers):
+        str1 = str(numbers)
+        if str1 == None or str1 == "":  # 第一个惯例异常处理
+            return 0
+        cur = 1 if str1[-1] != '0' else 0  # 第二个异常之处
+        nex = 1
+        for i in range(len(str1) - 2, -1, -1):
+            tmp = cur
+            if int(str1[i:i + 2]) < 26:
+                cur += nex  # nex是前者，cur是现在，一旦发生可以两种翻译，即前面所有遍历的字母都可以用在两种不同字串中
+            nex = tmp
+        return cur
