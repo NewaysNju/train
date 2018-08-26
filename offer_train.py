@@ -1374,7 +1374,7 @@ class Solution:
         return max(tempL)
 
 
-# 丑数
+# No.49 丑数
 class Solution:
     def GetUglyNumber_Solution(self, index):
         if not index:
@@ -1395,3 +1395,19 @@ class Solution:
             if ugly % 5 == 0:
                 T5 += 1
         return uglyL[-1]
+
+
+# No.50 第一个只出现一次的字符
+class Solution:
+    def FirstNotRepeatingChar(self, s):
+        if not s:
+            return None
+        sdict = dict()
+        for i in s:
+            if i in sdict.keys():
+                sdict[i] += 1
+            else:
+                sdict[i] = 1
+        for key, value in sdict.items():
+            if value == 1:
+                return s.find(key)
