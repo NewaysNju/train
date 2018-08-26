@@ -1347,3 +1347,28 @@ class Solution:
                     left = giftArray[j-1]
                 giftArray[j] = max(up, left) + values[i * col + j]
         return giftArray[-1]
+
+# No.48 最长不含重复字符的子字符串
+class Solution:
+    def longestSubstringWithoutDuplication(self, string):
+        if not string:
+            return None
+        tempL = [-1]*len(string)
+        tempL[0] = 1
+        temps = string[0]
+        for i in range(1, len(string)):
+            if string[i] not in temps:
+                # 如果第i个字符之前没有出现过
+                tempL[i] = tempL[i - 1] + 1
+                temps = temps + string[i]
+            else:
+                # 如果第i个字符之前出现过
+                ind = string[:i].rfind(string[i])
+                temps = temps + string[i]
+                temps = temps[(ind + 1): (i + 1)]
+                d = i - ind
+                if tempL[i-1] >= d:
+                    tempL[i] = d
+                else:
+                    tempL[i] = tempL[i-1] + 1
+        return max(tempL)
