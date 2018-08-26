@@ -1372,3 +1372,26 @@ class Solution:
                 else:
                     tempL[i] = tempL[i-1] + 1
         return max(tempL)
+
+
+# 丑数
+class Solution:
+    def GetUglyNumber_Solution(self, index):
+        if not index:
+            return 0
+        if index < 0:
+            return None
+        uglyL = [1]
+        T2 = 0
+        T3 = 0
+        T5 = 0
+        for i in range(1, index):
+            ugly = min(uglyL[T2] * 2, uglyL[T3] * 3, uglyL[T5] * 5)
+            uglyL.append(ugly)
+            if ugly % 2 == 0:
+                T2 += 1
+            if ugly % 3 == 0:
+                T3 += 1
+            if ugly % 5 == 0:
+                T5 += 1
+        return uglyL[-1]
