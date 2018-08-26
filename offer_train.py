@@ -1411,3 +1411,34 @@ class Solution:
         for key, value in sdict.items():
             if value == 1:
                 return s.find(key)
+
+            
+# No.52 两个链表的第一个公共节点
+class Solution:
+    def FindFirstCommonNode(self, pHead1, pHead2):
+        # 方法：先计算两个链表的长度，然后把长链表前进几步，然后两个链表齐头并进，然后找到第一个相同节点
+        len1 = self.getlistlen(pHead1)
+        len2 = self.getlistlen(pHead2)
+        lendiff = abs(len1 - len2)
+
+        if len1 >= len2:
+            while lendiff != 0:
+                pHead1 = pHead1.next
+                lendiff -= 1
+        else:
+            while lendiff != 0:
+                pHead2 = pHead2.next
+                lendiff -= 1
+        while pHead1 != None and pHead2 != None and pHead1 != pHead2:
+            pHead1 = pHead1.next
+            pHead2 = pHead2.next
+        return pHead1
+
+    # 计算链表长度
+    def getlistlen(self, pHead):
+        len = 0
+        pNode = pHead
+        while pNode != None:
+            len += 1
+            pNode = pNode.next
+        return len
