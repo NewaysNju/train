@@ -1442,11 +1442,12 @@ class Solution:
             len += 1
             pNode = pNode.next
         return len
-    
+
 
 # No.53 在排序数组中查找数字
 class Solution:
     def getmissingnumber(self, numbers, length):
+        # 0~n-1中缺失的数字
         if not numbers or length <= 0:
             return None
         left = 0
@@ -1462,4 +1463,20 @@ class Solution:
         if left == length:
             # 就最后一个数不在呗
             return length
+        return -1
+
+    def getnumbersameasindex(self, numbers, length):
+        # 数组中数值和下表相等的元素
+        if not numbers or length <= 0:
+            return None
+        left = 0
+        right = length - 1
+        while left <= right:
+            mid = (left + right) >> 1
+            if numbers[mid] == mid:
+                return mid
+            if numbers[mid] < mid:
+                left += 1
+            else:
+                right -= 1
         return -1
