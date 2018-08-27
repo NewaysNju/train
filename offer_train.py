@@ -1480,3 +1480,18 @@ class Solution:
             else:
                 right -= 1
         return -1
+
+
+
+# No.55 二叉树的深度
+class Solution:
+    def TreeDepth(self, pRoot):
+        # 普通二叉树的深度
+        if not pRoot:
+            return 0
+        nleft = self.TreeDepth(pRoot.left)
+        nright = self.TreeDepth(pRoot.right)
+        if nleft > nright:
+            return nleft + 1
+        else:
+            return nright + 1
