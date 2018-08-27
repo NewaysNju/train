@@ -1412,7 +1412,7 @@ class Solution:
             if value == 1:
                 return s.find(key)
 
-            
+
 # No.52 两个链表的第一个公共节点
 class Solution:
     def FindFirstCommonNode(self, pHead1, pHead2):
@@ -1442,3 +1442,24 @@ class Solution:
             len += 1
             pNode = pNode.next
         return len
+    
+
+# No.53 在排序数组中查找数字
+class Solution:
+    def getmissingnumber(self, numbers, length):
+        if not numbers or length <= 0:
+            return None
+        left = 0
+        right = length - 1
+        while left <= right:
+            mid = (left + right) >> 1
+            if numbers[mid] != mid:
+                if mid == 0 or numbers[mid - 1] == mid - 1:
+                    return mid
+                right = mid - 1
+            else:
+                left = mid + 1
+        if left == length:
+            # 就最后一个数不在呗
+            return length
+        return -1
