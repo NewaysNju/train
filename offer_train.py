@@ -1481,6 +1481,29 @@ class Solution:
                 right -= 1
         return -1
 
+# No.54 二叉搜索树的第k小节点
+class Solution:
+    # 返回对应节点TreeNode
+    # 实际上就是用中序遍历数列，然后顺序查找就可以
+    def KthNode(self, pRoot, k):
+        if not pRoot or k == 0:
+            return None
+        order = self.treeorder(pRoot)
+        if len(order) < k:
+            return None
+        else:
+            return order[k-1]
+
+    def treeorder(self, pRoot):
+        res = []
+        if not pRoot:
+            return None
+        if pRoot.left:
+            res.extend(self.treeorder(pRoot.left))
+        res.append(pRoot)
+        if pRoot.right:
+            res.extend(self.treeorder(pRoot.right))
+        return res
 
 
 # No.55 二叉树的深度
