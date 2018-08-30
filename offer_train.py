@@ -1554,3 +1554,9 @@ class Solution:
             else:
                 phead += 1
         return L
+
+# No.58 翻转字符串
+## 反转单词顺序
+class Solution:
+    def ReverseSentence(self, s):
+        return ' '.join(s.split(' ')[::-1])
