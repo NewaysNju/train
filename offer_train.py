@@ -1518,3 +1518,19 @@ class Solution:
             return nleft + 1
         else:
             return nright + 1
+
+# No.57 和为s的两个数字
+class Solution:
+    def FindNumbersWithSum(self, array, tsum):
+        if not array:
+            return []
+        phead = 0
+        ptail = len(array) - 1
+        while phead < ptail:
+            if array[phead] + array[ptail] == tsum:
+                return array[phead], array[ptail]
+            elif array[phead] + array[ptail] < tsum:
+                phead += 1
+            else:
+                ptail -= 1
+        return []
