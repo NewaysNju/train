@@ -1534,3 +1534,23 @@ class Solution:
             else:
                 ptail -= 1
         return []
+
+# No.57_2 和为s的连续整数序列
+class Solution:
+    def FindContinuousSequence(self, tsum):
+        if tsum < 3:
+            return []
+        phead = 1
+        ptail = 2
+        L = []
+        while phead <= (tsum + 1)/2:
+            sum = (phead + ptail)*(ptail - phead + 1)/2
+            if sum == tsum:
+                L.append([i for i in range(phead, ptail + 1)])
+                phead = phead + 1
+                ptail = phead + 1
+            elif sum < tsum:
+                ptail += 1
+            else:
+                phead += 1
+        return L
